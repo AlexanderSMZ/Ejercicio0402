@@ -17,6 +17,6 @@ public interface IEleccionServicio {
     public Eleccion crear(Eleccion eleccion);
     public Eleccion buscarPorCodigo(int codigoEleccion);
     public List<Eleccion> listar();
-    public boolean almacenarEnArchivo(Eleccion eleccion, String rutaArchivo)throws IOException;
+    public boolean almacenarEnArchivo(Eleccion eleccion, String rutaArchivo)throws Exception;
 //    public List<Eleccion> recuperarDeArchivo(String rutaArchivo) throws IOException;    
 }

@@ -23,24 +23,25 @@ public class EleccionServicio implements IEleccionServicio{
     public Eleccion crear(Eleccion eleccion) {
         var eleccionBuscado=this.buscarPorCodigo(eleccion.getCodigo());
         if(eleccionBuscado==null){
-            this.eleccionList.add(eleccion);
-            try{
-                this.almacenarEnArchivo(eleccion,"C:/carpeta1/archivoEleccion.dat");
-            }catch(IOException ex){
-//            throw new IOException("Eleccion no se pudo almacenar en el "
-//                    + " archivo de objetos"+ex.getMessage());                
-            }
+           this.eleccionList.add(eleccion); 
+           
         }else{
             throw new RuntimeException("El código ingresado ya se encuentra "
                     + "asignado al Servicio: "+eleccionBuscado.getDescripcion());            
         }
-
+           
+        try{
+            this.almacenarEnArchivo(eleccion,"C:/carpeta1/archivoEleccion.dat");
+        }catch(Exception ex){    
+            throw new RuntimeException("No se puede almacenar en archivo"+ex.getMessage());               
+        }
         return eleccion;
     }    
     
     
     @Override
     public List<Eleccion> listar() {
+        
         return this.eleccionList;
     }
 
@@ -57,14 +58,16 @@ public class EleccionServicio implements IEleccionServicio{
     }
 
     @Override
-    public boolean almacenarEnArchivo(Eleccion eleccion,String rutaArchivo) throws IOException {
+    public boolean almacenarEnArchivo(Eleccion eleccion,String rutaArchivo) throws Exception {
         var retorno=false;
         DataOutputStream salida = null;        
         try{
             salida = new DataOutputStream(new FileOutputStream(rutaArchivo,true));
             salida.writeInt(eleccion.getCodigo());
             salida.writeUTF(eleccion.getDescripcion());
+            salida.writeInt(eleccion.getNumParticipantes());
             salida.writeUTF(eleccion.getForma());
+            salida.writeUTF(eleccion.getTipo());
             salida.close();
             retorno=true;
         }catch(IOException e){
@@ -74,9 +77,35 @@ public class EleccionServicio implements IEleccionServicio{
     }
 
 //    @Override
-//    public List<Eleccion> recuperarDeArchivo(String rutaArchivo) throws IOException {
+//    public List<Eleccion> recuperarDeArchivo(String rutaArchivo) throws Exception {
+//        var eleccionList = new ArrayList<Eleccion>();
+//        DataInputStream entrada=null;
+//        try{
+//            entrada = new DataInputStream(new FileInputStream(rutaArchivo));
+//            
+//        }
 //        return new ArrayList<Eleccion>();
 //    }
  
+
+//    @Override
+//    public List<Capitan> recuperarDeArchivo(String rutaArchivo) throws Exception {
+//        var capitanList = new ArrayList<Capitan>();
+//        DataInputStream entrada=null;
+//        try{
+//            entrada = new DataInputStream(new FileInputStream(rutaArchivo));
+//            while(true){
+//                var codigo=entrada.readInt();
+//                var nombre=entrada.readUTF();
+//                var pais=entrada.readUTF();
+//                var capitan = new Capitan(codigo,nombre,pais);
+//                capitanList.add(capitan);
+//            }
+//        }catch(IOException e){
+//            entrada.close();
+//        }
+//        
+//        return capitanList;
+//    }    
     
 }

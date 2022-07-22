@@ -24,15 +24,15 @@ public class DignidadServicio implements IDignidadServicio{
         var dignidadBuscado=this.buscarPorCodigo(dignidad.getCodigo());
         if(dignidadBuscado==null){
             this.dignidadList.add(dignidad);
-        }else{
-            throw new RuntimeException("El código ingresado ya se encuentra "
-                    + "asignado al Dignidad: "+dignidadBuscado.getParroquia());    
-        }
         try{
             this.almacenarEnArchivo(dignidad,"C:/Carpeta11/dignidad.obj");            
         }catch(Exception ex){
             throw new RuntimeException("El barco no se pudo almacenar en el "
                     + "archivo de objetos"+ex.getMessage());
+        }            
+        }else{
+            throw new RuntimeException("El código ingresado ya se encuentra "
+                    + "asignado al Dignidad: "+dignidadBuscado.getParroquia());    
         }
         return dignidad;
     }     
